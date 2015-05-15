@@ -1,0 +1,135 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="com.esd.cloudcommunication.dao.SmsDao">
+
+	<resultMap id="ResultSms" type="com.esd.cloudcommunication.bean.Sms">
+		<id column="s_id" property="id" jdbcType="VARCHAR" />
+		<result column="s_create_time" property="createTime" jdbcType="TIMESTAMP" />
+		<result column="s_update_time" property="updateTime" jdbcType="TIMESTAMP" />
+		<result column="s_update_check" property="updateCheck" jdbcType="INTEGER" />
+		<result column="s_cell_number" property="cellNumber" jdbcType="VARCHAR" />
+		<result column="s_verify_code" property="verifyCode" jdbcType="VARCHAR" />
+		<result column="s_time_limit" property="timeLimit" jdbcType="BIT" />
+		<result column="s_remark" property="remark" jdbcType="VARCHAR" />
+	</resultMap>
+
+	<sql id="Base_Column_List">
+		s.id as s_id, s.create_time as s_create_time, s.update_time as s_update_time, s.update_check as s_update_check, 
+		s.cell_number as s_cell_number, s.verify_code as s_verify_code, s.time_limit as s_time_limit,
+		s.remark as s_remark
+	</sql>
+
+	<!-- insert -->
+	<insert id="insertSelective" keyProperty="id" parameterType="com.esd.cloudcommunication.bean.Sms">
+		<selectKey resultType="java.lang.String" order="AFTER" keyProperty="id">
+			SELECT LAST_INSERT_ID()
+		</selectKey>
+		insert into sms
+		<trim prefix="(" suffix=")" suffixOverrides=",">
+			id, update_time,
+			<if test="cellNumber != null and cellNumber != ''">
+				cell_number,
+			</if>
+			<if test="verifyCode != null and verifyCode != ''">
+				verify_code,
+			</if>
+			<if test="timeLimit != null and timeLimit != ''">
+				time_limit,
+			</if>
+			<if test="remark != null and remark != ''">
+				remark
+			</if>
+		</trim>
+		<trim prefix="values (" suffix=")" suffixOverrides=",">
+			#{id, jdbcType=VARCHAR}, now(),
+			<if test="cellNumber != null and cellNumber != ''">
+				#{cellNumber, jdbcType=VARCHAR},
+			</if>
+			<if test="verifyCode != null and verifyCode != ''">
+				#{verifyCode, jdbcType=VARCHAR},
+			</if>
+			<if test="timeLimit != null and timeLimit != ''">
+				#{timeLimit, jdbcType=INTEGER},
+			</if>
+			<if test="remark != null and remark != ''">
+				#{remark, jdbcType=VARCHAR}
+			</if>
+		</trim>
+	</insert>
+
+	<!-- delete -->
+	<delete id="deleteByPrimaryKey" parameterType="java.lang.String">
+		delete from sms
+		where id = #{id,jdbcType=VARCHAR}
+	</delete>
+
+	<!-- update -->
+	<update id="updateByPrimaryKey" parameterType="com.esd.cloudcommunication.bean.Sms">
+		update sms
+		<set>
+			update_time = now(),
+			update_check = update_check + 1,
+			<if test="cellNumber != null and cellNumber != ''">
+				#{cellNumber, jdbcType=VARCHAR},
+			</if>
+			<if test="verifyCode != null and verifyCode != ''">
+				#{verifyCode, jdbcType=VARCHAR},
+			</if>
+			<if test="timeLimit != null and timeLimit != ''">
+				#{timeLimit, jdbcType=INTEGER},
+			</if>
+			<if test="remark != null and remark != ''">
+				#{remark, jdbcType=VARCHAR}
+			</if>
+		</set>
+		where id = #{id,jdbcType=VARCHAR}
+	</update>
+
+	<!-- retrieve -->
+	<select id="retrieveByPrimaryKey" resultMap="ResultSms" parameterType="map">
+		select
+		<include refid="Base_Column_List" />
+		from sms as s
+		where s.id = #{id, jdbcType=VARCHAR}
+	</select>
+	
+	<select id="retrieveByPage" resultMap="ResultSms" parameterType="map">
+		select
+		<include refid="Base_Column_List" />
+		from sms as s
+		<trim prefix="where" prefixOverrides="and|or">
+			<if test="sms != null">
+				<if test="sms.cellNumber != null and sms.cellNumber != ''">
+					and s.cell_number like concat('%', #{sms.cellNumber, jdbcType=VARCHAR}, '%')
+				</if>
+				<if test="sms.verifyCode != null and sms.verifyCode != ''">
+					and s.verify_code like concat('%', #{sms.verifyCode, jdbcType=VARCHAR}, '%')
+				</if>
+				<if test="sms.timeLimit != null and sms.timeLimit > 0">
+					and s.time_limit = #{sms.timeLimit, jdbcType=INTEGER} 
+				</if>
+			</if>
+		</trim>
+		order by s.create_time desc 
+		limit #{start}, #{size}
+	</select>
+
+	<select id="retrieveCount" resultType="int" parameterType="map">
+		select count(*) 
+		from sms as s
+		<trim prefix="where" prefixOverrides="and|or">
+			<if test="sms != null">
+				<if test="sms.cellNumber != null and sms.cellNumber != ''">
+					and s.cell_number like concat('%', #{sms.cellNumber, jdbcType=VARCHAR}, '%')
+				</if>
+				<if test="sms.verifyCode != null and sms.verifyCode != ''">
+					and s.verify_code like concat('%', #{sms.verifyCode, jdbcType=VARCHAR}, '%')
+				</if>
+				<if test="sms.timeLimit != null and sms.timeLimit > 0">
+					and s.time_limit = #{sms.timeLimit, jdbcType=INTEGER} 
+				</if>
+			</if>
+		</trim>
+	</select>
+
+</mapper>

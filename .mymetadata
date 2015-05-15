@@ -1,0 +1,13 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<project-module
+  type="WEB"
+  name="cloudcommunication Maven Webapp"
+  id="myeclipse.1423182187406"
+  context-root="/cloudcommunication"
+  j2ee-spec="1.7"
+  archive="cloudcommunication Maven Webapp.war">
+  <attributes>
+    <attribute name="webrootdir" value="src/main/webapp" />
+  </attributes>
+</project-module>
+
