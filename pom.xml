@@ -27,6 +27,7 @@
 	<properties>
 		<spring.version>3.2.4.RELEASE</spring.version>
 		<project.build.encoding>UTF-8</project.build.encoding>
+		<basepath>/</basepath>
 	</properties>
 	
 	<dependencies>
@@ -223,5 +224,13 @@
 			<version>1.1.2</version>
 			<scope>runtime</scope>
 		</dependency>
+	<!-- 	<dependency>
+		    <groupId>ccp-sms-sdk</groupId>
+		    <artifactId>ccp-sms-sdk</artifactId>
+		    <version>2.6.3</version>
+		    <scope>system</scope>
+		    <systemPath>${project.basedir}/src/main/webapp/WEB-INF/lib/ccp-sms-sdk.jar</systemPath>
+		</dependency>
+		 -->
   </dependencies>
 </project>
