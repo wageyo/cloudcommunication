@@ -86,7 +86,7 @@
 	</update>
 
 	<!-- retrieve -->
-	<select id="retrieveByPrimaryKey" resultMap="ResultSms" parameterType="map">
+	<select id="retrieveByPrimaryKey" resultMap="ResultSms" parameterType="java.lang.String">
 		select
 		<include refid="Base_Column_List" />
 		from sms as s

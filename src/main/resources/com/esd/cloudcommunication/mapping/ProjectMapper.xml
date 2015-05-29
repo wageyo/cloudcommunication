@@ -1,0 +1,135 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="com.esd.cloudcommunication.dao.ProjectDao">
+
+	<resultMap id="ResultProject" type="com.esd.cloudcommunication.bean.Project">
+		<id column="p_id" property="id" jdbcType="VARCHAR" />
+		<result column="p_create_time" property="createTime" jdbcType="TIMESTAMP" />
+		<result column="p_update_time" property="updateTime" jdbcType="TIMESTAMP" />
+		<result column="p_update_check" property="updateCheck" jdbcType="INTEGER" />
+		<result column="p_projectno" property="projectno" jdbcType="VARCHAR" />
+		<result column="p_name" property="name" jdbcType="VARCHAR" />
+		<result column="p_description" property="description" jdbcType="BIT" />
+		<result column="p_remark" property="remark" jdbcType="VARCHAR" />
+	</resultMap>
+
+	<sql id="Base_Column_List">
+		p.id as p_id, p.create_time as p_create_time, p.update_time as p_update_time, p.update_check as p_update_check, 
+		p.projectno as p_projectno, p.name as p_name, p.description as p_description, p.remark as p_remark
+	</sql>
+
+	<!-- insert -->
+	<insert id="insertSelective" keyProperty="id" parameterType="com.esd.cloudcommunication.bean.Project">
+		<selectKey resultType="java.lang.String" order="AFTER" keyProperty="id">
+			SELECT LAST_INSERT_ID()
+		</selectKey>
+		insert into project
+		<trim prefix="(" suffix=")" suffixOverrides=",">
+			id, update_time,
+			<if test="projectno != null and projectno != ''">
+				projectno,
+			</if>
+			<if test="name != null and name != ''">
+				name,
+			</if>
+			<if test="description != null ">
+				description,
+			</if>
+			<if test="remark != null and remark != ''">
+				remark
+			</if>
+		</trim>
+		<trim prefix="values (" suffix=")" suffixOverrides=",">
+			#{id, jdbcType=VARCHAR}, now(),
+			<if test="projectno != null and projectno != ''">
+				#{projectno, jdbcType=VARCHAR},
+			</if>
+			<if test="name != null and name != ''">
+				#{name, jdbcType=VARCHAR},
+			</if>
+			<if test="description != null ">
+				#{description, jdbcType=VARCHAR},
+			</if>
+			<if test="remark != null and remark != ''">
+				#{remark, jdbcType=VARCHAR}
+			</if>
+		</trim>
+	</insert>
+
+	<!-- delete -->
+	<delete id="deleteByPrimaryKey" parameterType="java.lang.String">
+		delete from project
+		where id = #{id,jdbcType=VARCHAR}
+	</delete>
+
+	<!-- update -->
+	<update id="updateByPrimaryKey" parameterType="com.esd.cloudcommunication.bean.Project">
+		update project
+		<set>
+			update_time = now(),
+			update_check = update_check + 1, 
+			<if test="projectno != null and projectno != ''">
+				projectno = #{projectno, jdbcType=VARCHAR},
+			</if>
+			<if test="name != null and name != ''">
+				name = #{name, jdbcType=VARCHAR},
+			</if>
+			<if test="description != null ">
+				description = #{description, jdbcType=VARCHAR},
+			</if>
+			<if test="remark != null and remark != ''">
+				remark = #{remark, jdbcType=VARCHAR}
+			</if>
+		</set>
+		where id = #{id,jdbcType=VARCHAR}
+	</update>
+
+	<!-- retrieve -->
+	<select id="retrieveByPrimaryKey" resultMap="ResultProject" parameterType="java.lang.String">
+		select
+		<include refid="Base_Column_List" />
+		from project as P
+		where p.id = #{id, jdbcType=VARCHAR}
+	</select>
+	
+	<select id="retrieveByProjectno" resultMap="ResultProject" parameterType="java.lang.String">
+		select
+		<include refid="Base_Column_List" />
+		from project as p
+		where p.projectno = #{projectno, jdbcType=VARCHAR}
+	</select>
+	
+	<select id="retrieveByPage" resultMap="ResultProject" parameterType="map">
+		select
+		<include refid="Base_Column_List" />
+		from project as p
+		<trim prefix="where" prefixOverrides="and|or">
+			<if test="project != null">
+				<if test="project.projectno != null and project.projectno != ''">
+					p.projectno like concat('%', #{project.projectno, jdbcType=VARCHAR}, '%')
+				</if>
+				<if test="project.name != null and project.name != ''">
+					and p.name like concat('%', #{project.name, jdbcType=VARCHAR}, '%')
+				</if>
+			</if>
+		</trim>
+		order by p.create_time desc 
+		limit #{start}, #{size}
+	</select>
+
+	<select id="retrieveCount" resultType="int" parameterType="map">
+		select count(*) 
+		from project as p
+		<trim prefix="where" prefixOverrides="and|or">
+			<if test="project != null">
+				<if test="project.projectno != null and project.projectno != ''">
+					p.projectno like concat('%', #{project.projectno, jdbcType=VARCHAR}, '%')
+				</if>
+				<if test="project.name != null and project.name != ''">
+					and p.name like concat('%', #{project.name, jdbcType=VARCHAR}, '%')
+				</if>
+			</if>
+		</trim>
+	</select>
+
+</mapper>

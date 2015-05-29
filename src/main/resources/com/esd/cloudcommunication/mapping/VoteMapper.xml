@@ -1,0 +1,220 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="com.esd.cloudcommunication.dao.VoteDao">
+
+	<resultMap id="ResultVote" type="com.esd.cloudcommunication.bean.Vote">
+		<id column="v_id" property="id" jdbcType="VARCHAR" />
+		<result column="v_create_time" property="createTime" jdbcType="TIMESTAMP" />
+		<result column="v_update_time" property="updateTime" jdbcType="TIMESTAMP" />
+		<result column="v_update_check" property="updateCheck" jdbcType="INTEGER" />
+		<result column="v_callid" property="callid" jdbcType="VARCHAR" />
+		<result column="v_from_calling" property="fromCalling" jdbcType="VARCHAR" />
+		<result column="v_to_calling" property="toCalling" jdbcType="VARCHAR" />
+		<result column="v_verification_code" property="verificationCode" jdbcType="VARCHAR" />
+		<result column="v_verification_code_deadline" property="verificationCodeDeadline" jdbcType="VARCHAR" />
+		<result column="v_projectno" property="projectno" jdbcType="VARCHAR" />
+		<result column="v_type" property="type" jdbcType="VARCHAR" />
+		<result column="v_is_success" property="isSuccess" jdbcType="BIT" />
+		<result column="v_remark" property="remark" jdbcType="VARCHAR" />
+	</resultMap>
+	
+	<resultMap id="ResultModel" type="com.esd.cloudcommunication.bean.ResultModel">
+		<result column="projectno" property="projectno" jdbcType="VARCHAR" />
+		<result column="nums" property="nums" jdbcType="INTEGER" />
+	</resultMap>
+
+	<sql id="Base_Column_List">
+		v.id as v_id, v.create_time as v_create_time, v.update_time as v_update_time, v.update_check as v_update_check, 
+		v.callid as v_callid, v.from_calling as v_from_calling, v.to_calling as v_to_calling, v.verification_code as v_verification_code, 
+		v.verification_code_deadline as v_verification_code_deadline, v.projectno as v_projectno, 
+		v.type as v_type, v.is_success as v_is_success, v.remark as v_remark
+	</sql>
+
+	<!-- insert -->
+	<insert id="insertSelective" keyProperty="id" parameterType="com.esd.cloudcommunication.bean.Vote">
+		<selectKey resultType="java.lang.String" order="AFTER" keyProperty="id">
+			SELECT LAST_INSERT_ID()
+		</selectKey>
+		insert into vote
+		<trim prefix="(" suffix=")" suffixOverrides=",">
+			id, update_time,
+			<if test="callid != null and callid != ''">
+				callid,
+			</if>
+			<if test="fromCalling != null and fromCalling != ''">
+				from_calling,
+			</if>
+			<if test="toCalling != null and toCalling != ''">
+				to_calling,
+			</if>
+			<if test="verificationCode != null and verificationCode != ''">
+				verification_code,
+			</if>
+			<if test="verificationCodeDeadline != null and verificationCodeDeadline != ''">
+				verification_code_deadline,
+			</if>
+			<if test="projectno != null and projectno != ''">
+				projectno,
+			</if>
+			<if test="type != null and type != ''">
+				type,
+			</if>
+			<if test="isSuccess != null ">
+				is_success,
+			</if>
+			<if test="remark != null and remark != ''">
+				remark
+			</if>
+		</trim>
+		<trim prefix="values (" suffix=")" suffixOverrides=",">
+			#{id, jdbcType=VARCHAR}, now(),
+			<if test="callid != null and callid != ''">
+				#{callid, jdbcType=VARCHAR},
+			</if>
+			<if test="fromCalling != null and fromCalling != ''">
+				#{fromCalling, jdbcType=VARCHAR},
+			</if>
+			<if test="toCalling != null and toCalling != ''">
+				#{toCalling, jdbcType=VARCHAR},
+			</if>
+			<if test="verificationCode != null and verificationCode != ''">
+				#{verificationCode, jdbcType=VARCHAR},
+			</if>
+			<if test="verificationCodeDeadline != null and verificationCodeDeadline != ''">
+				#{verificationCodeDeadline, jdbcType=VARCHAR},
+			</if>
+			<if test="projectno != null and projectno != ''">
+				#{projectno, jdbcType=VARCHAR},
+			</if>
+			<if test="type != null and type != ''">
+				#{type, jdbcType=VARCHAR},
+			</if>
+			<if test="isSuccess != null ">
+				#{isSuccess, jdbcType=BIT},
+			</if>
+			<if test="remark != null and remark != ''">
+				#{remark, jdbcType=VARCHAR}
+			</if>
+		</trim>
+	</insert>
+
+	<!-- delete -->
+	<delete id="deleteByPrimaryKey" parameterType="java.lang.String">
+		delete from vote
+		where id = #{id,jdbcType=VARCHAR}
+	</delete>
+
+	<!-- update -->
+	<update id="updateByPrimaryKey" parameterType="com.esd.cloudcommunication.bean.Vote">
+		update vote
+		<set>
+			update_time = now(),
+			update_check = update_check + 1, 
+			<if test="callid != null and callid != ''">
+				callid = #{callid, jdbcType=VARCHAR},
+			</if>
+			<if test="fromCalling != null and fromCalling != ''">
+				from_calling = #{fromCalling, jdbcType=VARCHAR},
+			</if>
+			<if test="toCalling != null and toCalling != ''">
+				to_calling = #{toCalling, jdbcType=VARCHAR},
+			</if>
+			<if test="direction != null ">
+				direction = #{direction, jdbcType=BIT},
+			</if>
+			<if test="appid != null and appid != ''">
+				appid = #{appid, jdbcType=VARCHAR},
+			</if>
+			<if test="verificationCode != null and verificationCode != ''">
+				verification_code = #{verificationCode, jdbcType=VARCHAR},
+			</if>
+			<if test="projectno != null and projectno != ''">
+				projectno = #{projectno, jdbcType=VARCHAR},
+			</if>
+			<if test="isSuccess != null ">
+				is_success = #{isSuccess, jdbcType=BIT},
+			</if>
+			<if test="verificationTry != null and verificationTry > 0">
+				verification_try = #{verificationTry, jdbcType=INTEGER},
+			</if>
+			<if test="projectnoTry != null and projectnoTry > 0">
+				projectno_try = #{projectnoTry, jdbcType=INTEGER},
+			</if>
+			<if test="remark != null and remark != ''">
+				remark = #{remark, jdbcType=VARCHAR}
+			</if>
+		</set>
+		where id = #{id,jdbcType=VARCHAR}
+	</update>
+
+	<!-- retrieve -->
+	<select id="retrieveByPrimaryKey" resultMap="ResultVote" parameterType="java.lang.String">
+		select
+		<include refid="Base_Column_List" />
+		from vote as v
+		where v.id = #{id, jdbcType=VARCHAR}
+	</select>
+	
+	<!-- retrieve -->
+	<select id="retrieveByCallingAndProjectno" resultMap="ResultVote" parameterType="map">
+		select <include refid="Base_Column_List" />
+		from vote as v
+		where v.from_calling = #{fromCalling, jdbcType=VARCHAR}  and v.projectno = #{projectno, jdbcType=VARCHAR}
+	</select>
+	
+	<select id="retrieveByPage" resultMap="ResultVote" parameterType="map">
+		select
+		<include refid="Base_Column_List" />
+		from vote as v
+		<trim prefix="where" prefixOverrides="and|or">
+			<if test="vote != null">
+				<if test="vote.fromCalling != null and vote.fromCalling != ''">
+					v.from_calling like concat('%', #{vote.fromCalling, jdbcType=VARCHAR}, '%')
+				</if>
+				<if test="vote.toCalling != null and vote.toCalling != ''">
+					and v.to_calling like concat('%', #{vote.toCalling, jdbcType=VARCHAR}, '%')
+				</if>
+				<if test="vote.projectno != null and vote.projectno != ''">
+					and v.projectno like concat('%', #{vote.projectno, jdbcType=VARCHAR}, '%')
+				</if>
+				<if test="vote.type != null and vote.type != ''">
+					and v.type = #{vote.type, jdbcType=VARCHAR}
+				</if>
+				<if test="vote.isSuccess != null">
+					and v.is_success = #{vote.isSuccess, jdbcType=BIT} 
+				</if>
+			</if>
+		</trim>
+		order by v.create_time desc 
+		limit #{start}, #{size}
+	</select>
+
+	<select id="retrieveCount" resultType="int" parameterType="map">
+		select count(*) 
+		from vote as v
+		<trim prefix="where" prefixOverrides="and|or">
+			<if test="vote != null">
+				<if test="vote.fromCalling != null and vote.fromCalling != ''">
+					v.from_calling like concat('%', #{vote.fromCalling, jdbcType=VARCHAR}, '%')
+				</if>
+				<if test="vote.toCalling != null and vote.toCalling != ''">
+					and v.to_calling like concat('%', #{vote.toCalling, jdbcType=VARCHAR}, '%')
+				</if>
+				<if test="vote.projectno != null and vote.projectno != ''">
+					and v.projectno like concat('%', #{vote.projectno, jdbcType=VARCHAR}, '%')
+				</if>
+				<if test="vote.type != null and vote.type != ''">
+					and v.type = #{vote.type, jdbcType=VARCHAR}
+				</if>
+				<if test="vote.isSuccess != null">
+					and v.is_success = #{vote.isSuccess, jdbcType=BIT} 
+				</if>
+			</if>
+		</trim>
+	</select>
+
+	<select id="retrieveResult" resultMap="ResultModel" parameterType="int">
+		select projectno, count(*) as nums from vote where is_success=1 group by projectno order by projectno ;
+	</select>
+
+</mapper>

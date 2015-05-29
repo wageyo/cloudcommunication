@@ -37,8 +37,9 @@
 	</bean>
 	
 	<aop:config>
-		<aop:advisor pointcut="execution(public * com.esd.cloudcommunication.service.impl.CallingServiceImpl.*(..))" advice-ref="txAdvice" />
-		<aop:advisor pointcut="execution(public * com.esd.cloudcommunication.service.impl.SmsServiceImpl.*(..))" advice-ref="txAdvice" />
+		<aop:advisor pointcut="execution(public * com.esd.cloudcommunication.service.impl.ProjectServiceImpl.*(..))" advice-ref="txAdvice" />
+		<aop:advisor pointcut="execution(public * com.esd.cloudcommunication.service.impl.SMSServiceImpl.*(..))" advice-ref="txAdvice" />
+		<aop:advisor pointcut="execution(public * com.esd.cloudcommunication.service.impl.VoteServiceImpl.*(..))" advice-ref="txAdvice" />
 	</aop:config>
 	
 	<tx:advice id="txAdvice" transaction-manager="transactionManager">

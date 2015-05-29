@@ -16,8 +16,8 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.ResponseBody;
 
-import com.esd.cloudcommunication.bean.Calling;
-import com.esd.cloudcommunication.service.CallingService;
+import com.esd.cloudcommunication.bean.Vote;
+import com.esd.cloudcommunication.service.VoteService;
 
 @Controller
 @RequestMapping("/test")
@@ -27,7 +27,7 @@ public class TestController {
 			.getLogger(TestController.class);
 
 	@Autowired
-	private CallingService callingService;
+	private VoteService voteService;
 
 	@RequestMapping(value = "/start/startservice", method = RequestMethod.POST)
 	public void startservice(HttpServletRequest request,
@@ -56,7 +56,7 @@ public class TestController {
 	public Map<String, Object> startservice2(HttpServletRequest request,
 			HttpServletResponse response) throws IOException {
 		System.out
-		.println("***********************  startservice  *************************");
+				.println("***********************  startservice  *************************");
 		String callid = request.getParameter("callid");
 		String from = request.getParameter("from");
 		String to = request.getParameter("to");
@@ -67,20 +67,13 @@ public class TestController {
 		while (code < 1000 || code > 9999) {
 			code = (int) (Math.random() * 10000);
 		}
-		Calling calling = new Calling();
+		Vote calling = new Vote();
 		calling.setId("1502121333119418000600040000045d");
 		calling.setFromCalling("13804802181");
-//		calling.setTo("01028554454");
-//		calling.setAppid("aaf98f894b353559014b57899228128b");
-		if(direction!=null){
-			if("0".equals(direction)){
-				calling.setDirection(Boolean.FALSE);
-			}else{
-				calling.setDirection(Boolean.TRUE);
-			}
-		}
+		// calling.setTo("01028554454");
+		// calling.setAppid("aaf98f894b353559014b57899228128b");
 		calling.setVerificationCode(code.toString());
-		callingService.save(calling);
+		voteService.save(calling);
 		Map<String, Object> map = new HashMap<String, Object>();
 		map.put("name", "yufu");
 		map.put("id", calling.getId());

@@ -1,0 +1,18 @@
+@CHARSET "UTF-8";
+*{
+	font-family:Microsoft YaHei, Arial;
+	margin: 0px;
+	padding: 0px;
+	font-size:100%;
+}
+body{
+	display:block;
+	font-size:100%;
+}
+/**
+ * 最外层框架样式
+ **/
+.main-body {
+	width: 100%;
+	height: 100%;
+}
