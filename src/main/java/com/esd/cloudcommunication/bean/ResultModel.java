@@ -10,10 +10,12 @@ public class ResultModel {
 
 	private String projectno; // 项目编号
 	private Integer nums; // 票数
+	private String projectname; // 项目名称
 
 	@Override
 	public String toString() {
-		return "ResultModel [projectno=" + projectno + ", nums=" + nums + "]";
+		return "ResultModel [projectno=" + projectno + ", nums=" + nums
+				+ ", projectname=" + projectname + "]";
 	}
 
 	public String getProjectno() {
@@ -30,6 +32,14 @@ public class ResultModel {
 
 	public void setNums(Integer nums) {
 		this.nums = nums;
+	}
+
+	public String getProjectname() {
+		return projectname;
+	}
+
+	public void setProjectname(String projectname) {
+		this.projectname = projectname;
 	}
 
 }

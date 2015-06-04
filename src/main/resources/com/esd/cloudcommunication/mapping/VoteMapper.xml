@@ -20,6 +20,7 @@
 	
 	<resultMap id="ResultModel" type="com.esd.cloudcommunication.bean.ResultModel">
 		<result column="projectno" property="projectno" jdbcType="VARCHAR" />
+		<result column="projectname" property="projectname" jdbcType="VARCHAR" />
 		<result column="nums" property="nums" jdbcType="INTEGER" />
 	</resultMap>
 
@@ -214,7 +215,8 @@
 	</select>
 
 	<select id="retrieveResult" resultMap="ResultModel" parameterType="int">
-		select projectno, count(*) as nums from vote where is_success=1 group by projectno order by projectno ;
+		select p.name as projectname, p.projectno as projectno, (select count(*) from vote as v where v.is_success=1 and p.projectno=v.projectno) as nums
+		from project as p order by p.projectno;
 	</select>
 
 </mapper>

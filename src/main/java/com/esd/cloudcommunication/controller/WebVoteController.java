@@ -132,7 +132,7 @@ public class WebVoteController {
 		}
 		// 生成四位随机验证码
 		int code = KitService.getRandomCode();
-		Boolean flag = smsService.sendMessage(phone, String.valueOf(code));
+		Boolean flag = smsService.sendMessageBySHP(phone, String.valueOf(code));
 		map.put("code", code);
 		if (flag) {
 			logger.info("***** 短信验证码发送成功,验证码为：{} *****" + code);
@@ -277,17 +277,21 @@ public class WebVoteController {
 		return isMoblie;
 	}
 	
-	@RequestMapping(value = "/getResult", method = RequestMethod.POST)
+	@RequestMapping(value = "/getResult", method = RequestMethod.GET)
 	@ResponseBody
-	public Map<String, Object> getResult(HttpServletRequest request) {
+	public List<Map<String,Object>> getResult(HttpServletRequest request) {
 		logger.info("***** 验证手机是否投过票!!*****");
-		Map<String, Object> map = new HashMap<String, Object>();
+		List<Map<String,Object>> list = new ArrayList<Map<String,Object>>();
 		List<ResultModel> results = voteService.getResult();
-		if (results == null) {
-			map.put("result",-1);
-		} else {
-			map.put("result",results);
+		if (results != null) {
+			for(ResultModel resultModel:results){
+				Map<String, Object> map = new HashMap<String, Object>();
+				map.put("No", resultModel.getProjectno());
+				map.put("Total", resultModel.getNums());
+				map.put("Name", resultModel.getProjectname());
+				list.add(map);
+			}
 		}
-		return map;
+		return list;
 	}
 }

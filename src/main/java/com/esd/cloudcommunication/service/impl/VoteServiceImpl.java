@@ -79,8 +79,7 @@ public class VoteServiceImpl implements VoteService {
 
 	@Override
 	public List<ResultModel> getResult() {
-		// TODO Auto-generated method stub
-		return null;
+		return dao.retrieveResult();
 	}
 
 }

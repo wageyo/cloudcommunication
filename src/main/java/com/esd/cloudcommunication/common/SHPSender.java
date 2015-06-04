@@ -11,25 +11,26 @@ import java.net.URLEncoder;
 import org.apache.log4j.Logger;
 
 /**
+ *************************名商通***************************
  * 短信发送业务类--调用此处的方法来发送短信
  * 
  * @author yufu
  * @email ilxly01@126.com 2015-2-27
  */
-public class Sender {
-	private static Logger log = Logger.getLogger(Sender.class);
+public class SHPSender {
+	private static Logger log = Logger.getLogger(SHPSender.class);
 
-	public Sender() {
+	public SHPSender() {
 		this("default", "default");
 	}
 
-	public Sender(String name, String pwd) {
+	public SHPSender(String name, String pwd) {
 		comName = name;
 		comPwd = pwd;
 		Server = "http://www.139000.com";
 	}
 
-	public Sender(String name, String pwd, int serverNum) {
+	public SHPSender(String name, String pwd, int serverNum) {
 		comName = name;
 		comPwd = pwd;
 		if (serverNum == 2)
