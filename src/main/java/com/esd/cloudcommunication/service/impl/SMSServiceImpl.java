@@ -56,7 +56,6 @@ public class SMSServiceImpl implements SMSService {
 
 	@Value("${suda.md5key}")
 	private String sudamd5key;
-
 	/********************* 速达用户密码区 *****************************/
 
 	/**

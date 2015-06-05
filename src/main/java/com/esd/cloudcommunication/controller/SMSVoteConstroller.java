@@ -53,8 +53,12 @@ public class SMSVoteConstroller {
 	@RequestMapping(value="/receive",method=RequestMethod.POST)
 	@ResponseBody
 	public String receiveMsg(HttpServletRequest request) {
+		try {
+			request.setCharacterEncoding("gb2312");
+		} catch (UnsupportedEncodingException e) {
+			e.printStackTrace();
+		}
 		String receiveMsg = request.getParameter("args");
-		//65356862,132710,15388650501,????????,2015-6-01 16:29:46
 		if(receiveMsg==null || "".equals(receiveMsg)){
 			logger.info("我没有收到信息啦!");
 			return "-1";
@@ -151,15 +155,6 @@ public class SMSVoteConstroller {
 			e.printStackTrace();
 		}
 		logger.info("解码后的手机号和短信内容cellnumber:{},projectno: {}",cellnumber,projectno);
-//		try {
-//			projectno  = new String(projectno.getBytes("gb2312"),"utf-8");
-//			logger.info("projectno: {}",projectno);
-//		} catch (UnsupportedEncodingException e) {
-//			logger.error("编解码出现异常!!!");
-//			logger.error(e.getMessage());
-//			e.printStackTrace();
-//			return Boolean.FALSE;
-//		}
 		// 一. 检查短信内容是否合法, 即是是否为项目编号
 		// 1.手机号码是否正确或其他关于手机的校验
 		if (cellnumber == null || "".equals(cellnumber)) {
@@ -238,31 +233,4 @@ public class SMSVoteConstroller {
 		}
 	}
 	
-	public static void main(String[] args) {
-//		logger.info(Charset.defaultCharset().name());
-//		String s = "你好";
-//		try {
-//			byte[] b = s.getBytes("GB2312");
-//			logger.info(b.toString());
-//			String sa = new String(b,"GB2312");
-//			logger.info(sa);
-//			b = sa.getBytes("UTF-8");
-//			logger.info(b.toString());
-//			sa = new String(b,"UTF-8");
-//			logger.info(sa);
-//		} catch (UnsupportedEncodingException e) {
-//			e.printStackTrace();
-//		}
-//		
-//		System.out.println(Integer.MAX_VALUE);
-		
-		try {
-			String re = URLDecoder.decode("%b2%e2%ca%d4%c9%cf%d0%d0","gb2312");
-			System.out.println(re);
-		} catch (UnsupportedEncodingException e) {
-			// TODO Auto-generated catch block
-			e.printStackTrace();
-		}
-		
-	}
 }

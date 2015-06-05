@@ -8,8 +8,6 @@ import java.util.Map;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.RequestMapping;
@@ -23,8 +21,8 @@ import com.esd.cloudcommunication.service.VoteService;
 @RequestMapping("/test")
 public class TestController {
 
-	private static final Logger logger = LoggerFactory
-			.getLogger(TestController.class);
+//	private static final Logger logger = LoggerFactory
+//			.getLogger(TestController.class);
 
 	@Autowired
 	private VoteService voteService;
@@ -57,11 +55,11 @@ public class TestController {
 			HttpServletResponse response) throws IOException {
 		System.out
 				.println("***********************  startservice  *************************");
-		String callid = request.getParameter("callid");
-		String from = request.getParameter("from");
-		String to = request.getParameter("to");
-		String direction = request.getParameter("direction");
-		String appid = request.getParameter("appid");
+//		String callid = request.getParameter("callid");
+//		String from = request.getParameter("from");
+//		String to = request.getParameter("to");
+//		String direction = request.getParameter("direction");
+//		String appid = request.getParameter("appid");
 		// 生成四位数字验证码
 		Integer code = 0;
 		while (code < 1000 || code > 9999) {
